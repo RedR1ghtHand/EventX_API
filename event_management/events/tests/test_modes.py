@@ -1,6 +1,7 @@
 from django.test import TestCase
-from events.models import Event
 from django.utils import timezone
+
+from events.models import Event
 
 
 class EventModelTestCase(TestCase):
