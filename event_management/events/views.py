@@ -40,3 +40,6 @@ class EventRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EventSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+    def perform_update(self, serializer):
+        serializer.save(organizer=self.get_object().organizer)
+

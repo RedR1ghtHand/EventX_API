@@ -1,17 +1,19 @@
 from django.test import TestCase
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 from events.models import Event
 
 
 class EventModelTestCase(TestCase):
     def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='password')
         self.event = Event.objects.create(
             title='Test Event',
             description='This is a test description for the event.',
             date=timezone.now(),
             location='Test Location',
-            organizer='Test Organizer'
+            organizer=self.user
         )
 
     def test_event_creation(self):
@@ -40,7 +42,7 @@ class EventModelTestCase(TestCase):
             description='Another test event',
             date=timezone.now(),
             location='Another Location',
-            organizer='Another Organizer'
+            organizer=self.user
         )
-        events = Event.objects.filter(organizer='Test Organizer')
-        self.assertEqual(events.count(), 1)
+        events = Event.objects.filter(organizer=self.user)
+        self.assertEqual(events.count(), 2)

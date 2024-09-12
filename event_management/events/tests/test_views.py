@@ -20,7 +20,6 @@ class EventViewTestCase(TestCase):
             "description": "This is a test event",
             "date": "2024-10-10T10:00:00Z",
             "location": "Test Location",
-            "organizer": "Test Organizer"
         }, format='json')
 
         force_authenticate(request, user=self.user, token=self.token)
@@ -28,4 +27,5 @@ class EventViewTestCase(TestCase):
         response = view(request)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['organizer'], self.user.id)
 
