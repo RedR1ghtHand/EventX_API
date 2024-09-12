@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-from rest_framework.test import APIRequestFactory
+from rest_framework.test import APIRequestFactory, force_authenticate
 from rest_framework import status
 from django.test import TestCase
 from events.views import EventListCreateView
@@ -21,9 +21,7 @@ class EventViewTestCase(TestCase):
             "organizer": "Test Organizer"
         }, format='json')
 
-        request.user = self.user
-        request.META['HTTP_AUTHORIZATION'] = f'Token {self.token.key}'
-
+        force_authenticate(request, user=self.user, token=self.token)
         view = EventListCreateView.as_view()
         response = view(request)
 
