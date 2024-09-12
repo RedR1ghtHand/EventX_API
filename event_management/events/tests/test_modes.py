@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-from events.models import Event
+from events.models import Event, EventRegistration
 
 
 class EventModelTestCase(TestCase):
@@ -46,3 +46,47 @@ class EventModelTestCase(TestCase):
         )
         events = Event.objects.filter(organizer=self.user)
         self.assertEqual(events.count(), 2)
+
+
+class EventRegistrationModelTestCase(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='user1', password='password')
+        self.user2 = User.objects.create_user(username='user2', password='password')
+
+        self.event = Event.objects.create(
+            title="Test Event",
+            description="Test Event Description",
+            date=timezone.now(),
+            location="Test Location",
+            organizer=self.user1
+        )
+
+    def test_create_registration(self):
+        registration = EventRegistration.objects.create(user=self.user1, event=self.event)
+        self.assertEqual(EventRegistration.objects.count(), 1)
+        self.assertEqual(registration.user, self.user1)
+        self.assertEqual(registration.event, self.event)
+
+    def test_unique_registration(self):
+        EventRegistration.objects.create(user=self.user1, event=self.event)
+        with self.assertRaises(Exception):
+            EventRegistration.objects.create(user=self.user1, event=self.event)
+
+    def test_delete_registration(self):
+        registration = EventRegistration.objects.create(user=self.user1, event=self.event)
+        registration_id = registration.id
+        registration.delete()
+        with self.assertRaises(EventRegistration.DoesNotExist):
+            EventRegistration.objects.get(id=registration_id)
+
+    def test_filter_registration_by_user(self):
+        EventRegistration.objects.create(user=self.user1, event=self.event)
+        EventRegistration.objects.create(user=self.user2, event=self.event)
+        registrations = EventRegistration.objects.filter(user=self.user1)
+        self.assertEqual(registrations.count(), 1)
+
+    def test_filter_registration_by_event(self):
+        EventRegistration.objects.create(user=self.user1, event=self.event)
+        registrations = EventRegistration.objects.filter(event=self.event)
+        self.assertEqual(registrations.count(), 1)
+
