@@ -1,15 +1,15 @@
 # EventX API
 
-EventX API is a Django REST Framework application for managing events. It includes features such as user authentication, event registration, and event filtering. The application is containerized using Docker for easy setup and deployment.
+EventX API is a Django REST Framework application for managing events. It includes features such as user authentication, event registration with email notifications upon registration, and event filtering. The application is containerized using Docker for easy setup and deployment.
 
 ## Features
 
 - User Registration and Authentication
 - Event Management (Create, Read, Update, Delete events)
-- Event Registration by users
+- Event registration with email notifications upon.
 - Event filtering and search
 - API secured using Token-based Authentication
-- generated API documentation via drf-yasg [here](#api)
+- generated API documentation via drf-yasg [here](#4-api)
 
 ## Requirements
 
@@ -26,11 +26,12 @@ EventX API is a Django REST Framework application for managing events. It includ
 ### 2. No Docker:
  1. Have the following prerequisites: python 3.11+, poetry(`pip install poetry`)
  2. `poetry install`
- 3. `cd event_management`
- 4. `python manage.py migrate`
- 5. (optional) `python manage.py createsuperuser`
- 6. `python manage.py runserver`
- 7. (tests)`pytest`
+ 3. `cp .env.example .env`
+ 4. `cd event_management`
+ 5. `python manage.py migrate`
+ 6. (optional) `python manage.py createsuperuser`
+ 7. `python manage.py runserver`
+ 8. (tests)`pytest`
 
  - The application will be available at http://127.0.0.1:8000/.
 
@@ -44,5 +45,5 @@ EventX API is a Django REST Framework application for managing events. It includ
 
 - The application will be available at http://localhost:8000/.
 
-### API
+### 4. API
 - documentation will be available at http://localhost:8000/swagger/ | http://localhost:8000/redoc/

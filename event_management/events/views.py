@@ -8,6 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import UserSerializer, EventSerializer, EventRegistrationSerializer
 from .models import Event, EventRegistration
+from .utils import send_registration_email
 
 
 class UserRegistrationView(APIView):
@@ -64,6 +65,8 @@ class EventRegistrationView(generics.CreateAPIView):
             return Response({"detail": "Ви вже зареєстровані на цю подію."}, status=status.HTTP_400_BAD_REQUEST)
 
         registration = EventRegistration.objects.create(user=request.user, event=event)
+        send_registration_email(request.user, event)
+
         serializer = self.get_serializer(registration)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
