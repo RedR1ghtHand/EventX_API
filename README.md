@@ -25,7 +25,7 @@ EventX API is a Django REST Framework application for managing events. It includ
 
 ### 2. No Docker:
  1. Have the following prerequisites: python 3.11+, poetry(`pip install poetry`)
- 2. `poetry install`
+ 2. `poetry install --no-root`
  3. `cp .env.example .env`
  4. `cd event_management`
  5. `python manage.py migrate`
@@ -36,10 +36,6 @@ EventX API is a Django REST Framework application for managing events. It includ
  - The application will be available at http://127.0.0.1:8000/.
 
 ### 3. Docker:
-- Build and Run the Docker Container:
-  1. `docker build -t eventx-api .`
-  2. `docker run -p 8000:8000 eventx-api`
-
 - Running with Docker Compose:
   1. `docker-compose up --build`
 
